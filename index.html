@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background: #f7f7f7;
+        }
+        .counter {
+            font-size: 48px;
+            margin-top: 20px;
+        }
+        .party {
+            font-size: 24px;
+            color: #ff6347;
+            margin-top: 20px;
+        }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6347;
+            opacity: 0;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Day Counter</h1>
+    <div class="counter" id="counter"></div>
+    <div class="party" id="party"></div>
+    <div class="confetti" id="confetti"></div>
+
+    <script>
+        function calculateDays() {
+            const startDate = new Date("2024-07-23");
+            const endDate = new Date("2024-08-14");
+            const currentDate = new Date();
+            const timeDifference = currentDate - startDate;
+            const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+            if (currentDate >= startDate && currentDate <= endDate) {
+                document.getElementById('counter').innerText = daysDifference + " days have passed.";
+                document.getElementById('party').innerText = "Let's celebrate! 🎉";
+                startConfetti();
+            } else if (currentDate < startDate) {
+                document.getElementById('counter').innerText = "The event starts in " + Math.ceil((startDate - currentDate) / (1000 * 60 * 60 * 24)) + " days.";
+            } else {
+                document.getElementById('counter').innerText = "The event ended " + Math.ceil((currentDate - endDate) / (1000 * 60 * 60 * 24)) + " days ago.";
+            }
+        }
+
+        function startConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            for (let i = 0; i < 100; i++) {
+                const confettiPiece = document.createElement('div');
+                confettiPiece.className = 'confetti-piece';
+                confettiPiece.style.left = Math.random() * 100 + 'vw';
+                confettiPiece.style.animationDelay = Math.random() * 5 + 's';
+                confettiContainer.appendChild(confettiPiece);
+            }
+        }
+
+        calculateDays();
+    </script>
+</body>
+</html>
